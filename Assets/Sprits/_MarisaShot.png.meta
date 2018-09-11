@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: 241b7f321738a56429453a1f8e9c8198
+guid: 09c00e00e71877d4b9f6271be84ba84e
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Marisa_Shot_0
-    21300002: Marisa_Shot_1
-    21300004: Marisa_Shot_2
-    21300006: Marisa_Shot_3
+    21300000: _MarisaShot_0
+    21300002: _MarisaShot_1
+    21300004: _MarisaShot_2
+    21300006: _MarisaShot_3
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -121,13 +121,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Marisa_Shot_0
+      name: _MarisaShot_0
       rect:
         serializedVersion: 2
-        x: 10
-        y: 15
-        width: 61
-        height: 60
+        x: 5
+        y: 1
+        width: 25
+        height: 29
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -135,19 +135,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2ec58c2293f1daa469033ee290f32588
+      spriteID: 02a965dbc64440447bab3a6f3331e278
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Marisa_Shot_1
+      name: _MarisaShot_1
       rect:
         serializedVersion: 2
-        x: 80
-        y: 15
-        width: 61
-        height: 60
+        x: 40
+        y: 1
+        width: 25
+        height: 29
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -155,19 +155,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 57d86f149fe5cc84995aa2335a368ab3
+      spriteID: 472eb143115e5374fb6f1f938b410305
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Marisa_Shot_2
+      name: _MarisaShot_2
       rect:
         serializedVersion: 2
-        x: 150
-        y: 15
-        width: 61
-        height: 59
+        x: 75
+        y: 1
+        width: 25
+        height: 29
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -175,19 +175,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: aaaff5f2329e6be4bb2265cee2296a85
+      spriteID: 2f1f4afd60e6d454b8ee4a918e1abf6e
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Marisa_Shot_3
+      name: _MarisaShot_3
       rect:
         serializedVersion: 2
-        x: 220
-        y: 15
-        width: 61
-        height: 60
+        x: 110
+        y: 1
+        width: 25
+        height: 29
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -195,7 +195,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6c63e1d749d81ed43aa4817575e0d9ce
+      spriteID: 504ccd4200a11e14883507f56e6f3705
       vertices: []
       indices: 
       edges: []
@@ -203,7 +203,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: fad9f29bc2f0630478acc48e390bbd78
+    spriteID: e7a654bec5de40c47b3550eb0aa32b60
     vertices: []
     indices: 
     edges: []

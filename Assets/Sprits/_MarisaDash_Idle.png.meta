@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: dc79bc609c7ed0246b4fa5ff53b0ec6a
+guid: 80f8702c6a30afa4da102fd159f3c1ee
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Marisa_Dash_0
-    21300002: Marisa_Dash_1
-    21300004: Marisa_Dash_2
-    21300006: Marisa_Dash_3
+    21300000: _MarisaDash_Idle_0
+    21300002: _MarisaDash_Idle_1
+    21300004: _MarisaDash_Idle_2
+    21300006: _MarisaDash_Idle_3
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -121,13 +121,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Marisa_Dash_0
+      name: _MarisaDash_Idle_0
       rect:
         serializedVersion: 2
-        x: 6
-        y: 20
-        width: 54
-        height: 45
+        x: 5
+        y: 1
+        width: 24
+        height: 25
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -135,19 +135,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 033e13cfa08529a49a0732625aa3b0f2
+      spriteID: aae386ab107bb7b4482dbce9a0c0d160
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Marisa_Dash_1
+      name: _MarisaDash_Idle_1
       rect:
         serializedVersion: 2
-        x: 70
-        y: 20
-        width: 55
-        height: 44
+        x: 40
+        y: 1
+        width: 24
+        height: 25
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -155,19 +155,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0310785a8d1d94d40b4391bc5ee076ca
+      spriteID: b43da17c1cdd39c4d96e6a30d323269e
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Marisa_Dash_2
+      name: _MarisaDash_Idle_2
       rect:
         serializedVersion: 2
-        x: 135
-        y: 20
-        width: 55
-        height: 44
+        x: 75
+        y: 1
+        width: 24
+        height: 25
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -175,19 +175,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 13eef79e0e5c9524b9776b0cb941441a
+      spriteID: b22ac540ffb51cd4bb3908c59841468b
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Marisa_Dash_3
+      name: _MarisaDash_Idle_3
       rect:
         serializedVersion: 2
-        x: 200
-        y: 20
-        width: 55
-        height: 44
+        x: 110
+        y: 1
+        width: 24
+        height: 25
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -195,7 +195,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8979269ca5bb89a40a178560edbeee1e
+      spriteID: e1dffda907f4e814aa60b8e54a5dc4cf
       vertices: []
       indices: 
       edges: []
@@ -203,7 +203,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: db811da4cc9eaf44c84fe09774325568
+    spriteID: f54cb89d6e729df409e2ca548e2dde18
     vertices: []
     indices: 
     edges: []
