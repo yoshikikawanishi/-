@@ -29,8 +29,8 @@ public class MovieManager : MonoBehaviour {
     }
 
     public void OPScene() {
-        messageManager.k = 0;
-        messageManager.n = 4;
+        messageManager.k = 2;
+        messageManager.n = 2;
         messageManager.startMessageTrigger = true;
     }
 }

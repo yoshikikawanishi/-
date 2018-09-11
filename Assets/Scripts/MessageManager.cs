@@ -21,15 +21,18 @@ public class MessageManager : MonoBehaviour {
     private Text messageText;
     //キャラ名表示のテキストコンポーネント
     private Text nameText;
+    //キャラのアイコン表示用
+    private Image charctorIcon;
+
 
     //今のメッセージを表示しきったかどうか
     private bool isOneMessage = false;
     //ほかのスクリプトから操作するメッセージ表示開始のトリガー
     public bool startMessageTrigger = false;
 
-    //初めののメッセージ番号(配列番号)
+    //１連のセリフの初めののメッセージ番号(配列番号)
     public int k = 0;
-    //一連のメッセージ数
+    //１連のセリフの最後の配列番号
     public int n = 3;
     //一つのセリフ中の今見ている文字番号
     private int i = 0;
@@ -51,13 +54,13 @@ public class MessageManager : MonoBehaviour {
     // Use this for initialization
     void Start() {
 
-
-
         for (int l = 0; l < 4; l++) {
             message[l] = new TextClass();
         }
         //テキストを代入
         MessageText();
+
+        
     }
 
 
@@ -70,40 +73,40 @@ public class MessageManager : MonoBehaviour {
             StartMessage();
             isEndMessage = false;
             startMessageTrigger = false;
-            //キャラ名の表示
-            nameText.text = message[k].name;
+            
         }
 
         //一連ののセリフを表示しきっていない
         if (!isEndMessage) {
-
             //一つのセリフを表示
             if (!isOneMessage) {
                 PrintText();
-                nameText.text = message[k].name;
             }
+
             //一つのセリフを表示しきったとき
             if (isOneMessage == true) {
-                //zが押されたらメッセージの配列番号をインクリメントし、テキストをリセットし、キャラ名を変える
+                //zが押されたらメッセージの配列番号をインクリメントし、テキストをリセットする
                 if (Input.GetKeyDown(KeyCode.Z)) {
                     k++;
                     TextReset();
-                    i = 0;
                     isOneMessage = false;
                     //一連のセリフを表示しきった時
-                    if (k >= n) {
+                    if (k > n) {
                         isEndMessage = true;
                         i = -1;
+                    }
+                    else {
+                        nameText.text = message[k].name;
+                        DisplayIcon();
                     }
                 }
             }
         }
 
-        //メッセージを表示しきったときzでパネルを消去
+        //1連のセリフを表示しきったときzでパネルを消去
         if (isEndMessage) {
             if (Input.GetKeyDown(KeyCode.Z)) {
                 TextReset();
-                i = 0;
                 Destroy(messagePanel);
             }
         }
@@ -117,13 +120,20 @@ public class MessageManager : MonoBehaviour {
         messagePanel = GameObject.Instantiate(Resources.Load("Prefabs/Panel")) as GameObject;
         canvas = GameObject.Find("Canvas");
         messagePanel.transform.SetParent(canvas.transform, false);
+
         //テキストを取得
         messageText = messagePanel.transform.GetChild(0).GetComponent<Text>();
         messageText.text = "";
         //キャラ名表示のテキストを取得
         nameText = messagePanel.transform.GetChild(1).GetComponent<Text>();
-        nameText.text = "";
-
+        nameText.text = ""; 
+        //アイコン表示用のパネルを取得
+        charctorIcon = messagePanel.transform.GetChild(2).GetComponent<Image>();
+        
+        //キャラ名の表示
+        nameText.text = message[k].name;
+        //アイコンの表示
+        DisplayIcon();
     }
 
 
@@ -133,7 +143,9 @@ public class MessageManager : MonoBehaviour {
         nameText.text = "";
         textLength = 0;
         t = 0f;
+        i = 0;
     }
+
 
     //テキスト欄に一文字ずつ表示
     void PrintText() {
@@ -156,7 +168,23 @@ public class MessageManager : MonoBehaviour {
         }
     }
 
+    //--------------------------------------------------------------------------------------------
+    
+    //アイコンの表示
+    void DisplayIcon() {
+        /*
+         アイコン用のスプライトの名前はキャラクターの名前にする
+         新しくアイコンを付け足す時はここのスイッチ分の中に名前を入れる
+         */
+ 
+        switch (message[k].name) {
+            case "魔理沙": charctorIcon.sprite = Resources.Load<Sprite>("Images/Icon/魔理沙"); break;
+            case "勇儀": charctorIcon.sprite = Resources.Load<Sprite>("Images/Icon/勇儀"); break;
+        }
+    }
 
+    //----------------------------------------------------------------------------------------------
+    
     //表示するテキスト
     void MessageText() {
         /*
@@ -170,12 +198,13 @@ public class MessageManager : MonoBehaviour {
         //-----------------------------------------ここからテキスト----------------------------------
         message[0].name = "魔理沙";
         message[0].serifu = "弾幕はパワー";
-        message[1].name = "霊夢";
+        message[1].name = "勇儀";
         message[1].serifu = "お賽銭";
-        message[2].name = "ああああ";
+
+        message[2].name = "魔理沙";
         message[2].serifu = "ああああああああああああああああああああああああああ\nいいいいいいいい";
 
-        message[3].name = "紫";
+        message[3].name = "勇儀";
         message[3].serifu = "それはそれは残酷ですわw";
     }
 
