@@ -15,7 +15,7 @@ public class MessageManager : MonoBehaviour {
         public string name;
         public string serifu;
     }
-    public TextClass[] message = new TextClass[4];
+    public TextClass[] message = new TextClass[6];
 
     //メッセージ表示のテキストコンポーネント
     private Text messageText;
@@ -48,13 +48,14 @@ public class MessageManager : MonoBehaviour {
     private float t = 0f;
 
     //メッセージをすべて表示したかどうか
-    private bool isEndMessage = true;
+    public bool isEndMessage = false;
+    private bool onMessage = false;
 
 
     // Use this for initialization
     void Start() {
 
-        for (int l = 0; l < 4; l++) {
+        for (int l = 0; l <= 5; l++) {
             message[l] = new TextClass();
         }
         //テキストを代入
@@ -68,16 +69,16 @@ public class MessageManager : MonoBehaviour {
     void Update() {
 
         //パネルとテキストの生成、取得、メッセージ表示の開始
-        if (startMessageTrigger && isEndMessage && i == 0) {
+        if (startMessageTrigger && !onMessage && i == 0) {
             //パネルの生成、メッセージ表示開始
             StartMessage();
-            isEndMessage = false;
+            onMessage = true;
             startMessageTrigger = false;
             
         }
 
         //一連ののセリフを表示しきっていない
-        if (!isEndMessage) {
+        if (onMessage) {
             //一つのセリフを表示
             if (!isOneMessage) {
                 PrintText();
@@ -92,6 +93,7 @@ public class MessageManager : MonoBehaviour {
                     isOneMessage = false;
                     //一連のセリフを表示しきった時
                     if (k > n) {
+                        onMessage = false;
                         isEndMessage = true;
                         i = -1;
                     }
@@ -197,15 +199,22 @@ public class MessageManager : MonoBehaviour {
 
         //-----------------------------------------ここからテキスト----------------------------------
         message[0].name = "魔理沙";
-        message[0].serifu = "弾幕はパワー";
+        message[0].serifu = "aaa";
+
         message[1].name = "勇儀";
-        message[1].serifu = "お賽銭";
+        message[1].serifu = "bbb";
 
         message[2].name = "魔理沙";
-        message[2].serifu = "ああああああああああああああああああああああああああ\nいいいいいいいい";
+        message[2].serifu = "asdf";
 
         message[3].name = "勇儀";
-        message[3].serifu = "それはそれは残酷ですわw";
+        message[3].serifu = "abcd";
+
+        message[4].name = "魔理沙";
+        message[4].serifu = "あ～";
+
+        message[5].name = "魔理沙";
+        message[5].serifu = "い～";
     }
 
 

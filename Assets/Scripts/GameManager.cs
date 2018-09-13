@@ -8,9 +8,20 @@ public class GameManager : MonoBehaviour {
     //シングルトン用
     public static GameManager instance;
 
-    //オープニングシーンかどうか
-    public bool isOpeningScene = false;
+    //スクリプト
+    private MessageManager messageManager;
 
+    //オープニングシーン開始
+    public bool startOP = false;
+    //オープニングシーン終了
+    public bool endOP = false;
+    //ゲームシーン開始
+    public bool[] startGameSceneMV = {false, false, false, false, false, false };
+    //ゲームシーン終了
+    public bool[] endGameSceneMV = { false, false, false, false, false, false };
+
+    //プレイヤーが操作可能かどうか
+    public bool isPlayable = false;
 
     void Awake() {
         //シングルトン
@@ -27,14 +38,33 @@ public class GameManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-       
+
+        //スクリプトの取得
+        messageManager = GetComponent<MessageManager>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-		
-	}
+        //オープニングの終了、ゲームシーンの開始
+        if (SceneManager.GetActiveScene().name == "OPScene") {
+            if (messageManager.isEndMessage) {
+                messageManager.isEndMessage = false;
+                endOP = true;
+                startGameSceneMV[0] = true;
+            }
+        }
+
+        //ゲームシーンのムービー1の終了
+        if(SceneManager.GetActiveScene().name == "GameScene") {
+            if (messageManager.isEndMessage) {
+                messageManager.isEndMessage = false;
+                endGameSceneMV[0] = true;
+                isPlayable = true;
+            }
+        }
+
+    }
 
 
 
@@ -43,9 +73,10 @@ public class GameManager : MonoBehaviour {
 
 
     //スタートボタン押下時に呼ばれる関数
+    //オープニングの開始
     public void GameStart() {
         SceneManager.LoadScene("OPScene");
-        isOpeningScene = true;
+        startOP = true;
     }
 
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MarisaTest : MonoBehaviour {
+public class PlayerController : MonoBehaviour {
 
     //リジッドボディー取得用
     private Rigidbody2D _rigidbody;
@@ -28,46 +28,55 @@ public class MarisaTest : MonoBehaviour {
     private bool isScrollForward = false;
     private bool isScrollBack = false;
 
-	// Use this for initialization
-	void Start () {
+    //スクリプト
+    private GameManager gameManager;
+
+    // Use this for initialization
+    void Start() {
         //リジッドボディー取得
         _rigidbody = this.GetComponent<Rigidbody2D>();
         //アニメーションコンポーネントの取得
         anim = GetComponent<Animator>();
         //スクロールする背景の取得
         scrollBackGround = GameObject.Find("BackGround");
+        //スクリプトの取得
+        gameManager = GameObject.Find("Scripts").GetComponent<GameManager>();
 
         //大きさと向きの変数
         scale = this.transform.localScale;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-
-        //背景をスクロールさせるかどうかの判別
-        JudgeScroll();
-
-        //移動
-        Transition();
-        //アニメーション
-        Animation();
-
-        //モードの切り替え
-        if (Input.GetKeyDown(KeyCode.X)) {
-            if (isDashMode) {
-                isDashMode = false;
-                v = 7f;
-                scrollVelocity = 0.14f;
-            }
-            else {
-                isDashMode = true;
-                v = 10f;
-                scrollVelocity = 0.2f;
-            }
-        }
-        
-       
     }
+
+    // Update is called once per frame
+    void Update() {
+
+        if (gameManager.isPlayable) {
+
+            //背景をスクロールさせるかどうかの判別
+            JudgeScroll();
+
+            //移動
+            Transition();
+            //アニメーション
+            Animation();
+
+            //モードの切り替え
+            if (Input.GetKeyDown(KeyCode.X)) {
+                if (isDashMode) {
+                    isDashMode = false;
+                    v = 7f;
+                    scrollVelocity = 0.14f;
+                }
+                else {
+                    isDashMode = true;
+                    v = 10f;
+                    scrollVelocity = 0.2f;
+                }
+            }
+
+        }
+
+    }
+
 
     //背景をスクロールさせるかどうかの判別
     void JudgeScroll() {
@@ -88,7 +97,7 @@ public class MarisaTest : MonoBehaviour {
 
     //移動と向き
     void Transition() {
-        
+
         //移動と向き
         //右移動
         if (Input.GetKey(KeyCode.RightArrow)) {
