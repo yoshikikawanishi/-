@@ -204,7 +204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d4ea6c788d84cc4daccf4cb0b723b1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOpeningScene: 0
+  isPlayable: 0
 --- !u!4 &202278546
 Transform:
   m_ObjectHideFlags: 0
@@ -229,6 +229,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3375b292eb89c784ea58b6b95e367988, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startOPMV: 0
+  endOPMV: 0
+  startGameSceneMV: 000000000000
+  endGameSceneMV: 000000000000
 --- !u!114 &202278548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -244,6 +248,7 @@ MonoBehaviour:
   k: 0
   n: 3
   textSpeed: 0.08
+  isEndMessage: 0
 --- !u!1 &210811413
 GameObject:
   m_ObjectHideFlags: 0

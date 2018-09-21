@@ -15,7 +15,7 @@ public class MessageManager : MonoBehaviour {
         public string name;
         public string serifu;
     }
-    public TextClass[] message = new TextClass[6];
+    public TextClass[] message = new TextClass[100];
 
     //メッセージ表示のテキストコンポーネント
     private Text messageText;
@@ -43,7 +43,7 @@ public class MessageManager : MonoBehaviour {
 
     //テキストスピード
     [SerializeField]
-    private float textSpeed = 0.08f;
+    private float textSpeed = 0.05f;
     //経過時間
     private float t = 0f;
 
@@ -55,63 +55,55 @@ public class MessageManager : MonoBehaviour {
     // Use this for initialization
     void Start() {
 
-        for (int l = 0; l <= 5; l++) {
+        for (int l = 0; l <= 99; l++) {
             message[l] = new TextClass();
         }
         //テキストを代入
         MessageText();
 
-        
     }
 
 
     // Update is called once per frame
     void Update() {
 
-        //パネルとテキストの生成、取得、メッセージ表示の開始
-        if (startMessageTrigger && !onMessage && i == 0) {
-            //パネルの生成、メッセージ表示開始
+        //表示開始
+        if (startMessageTrigger) {
+            startMessageTrigger = false;
             StartMessage();
             onMessage = true;
-            startMessageTrigger = false;
-            
         }
 
-        //一連ののセリフを表示しきっていない
+        //表示
         if (onMessage) {
-            //一つのセリフを表示
-            if (!isOneMessage) {
-                PrintText();
-            }
+            PrintText();
+        }
 
-            //一つのセリフを表示しきったとき
-            if (isOneMessage == true) {
-                //zが押されたらメッセージの配列番号をインクリメントし、テキストをリセットする
-                if (Input.GetKeyDown(KeyCode.Z)) {
+        
+        //一つのセリフを表示しきった時
+        if (isOneMessage) {
+            if (Input.GetKeyDown(KeyCode.Z)) {
+                isOneMessage = false;
+                TextReset();
+                if (k < n) {
                     k++;
-                    TextReset();
-                    isOneMessage = false;
-                    //一連のセリフを表示しきった時
-                    if (k > n) {
-                        onMessage = false;
-                        isEndMessage = true;
-                        i = -1;
-                    }
-                    else {
-                        nameText.text = message[k].name;
-                        DisplayIcon();
-                    }
+                }
+                else {
+                    Destroy(messagePanel);
+                    onMessage = false;
+                    isEndMessage = true;
                 }
             }
         }
 
-        //1連のセリフを表示しきったときzでパネルを消去
-        if (isEndMessage) {
-            if (Input.GetKeyDown(KeyCode.Z)) {
-                TextReset();
-                Destroy(messagePanel);
-            }
+        //表示速度
+        if (Input.GetKeyDown(KeyCode.Z)) {
+            textSpeed = 0.01f;
         }
+        if (Input.GetKeyUp(KeyCode.Z)) {
+            textSpeed = 0.05f;
+        }
+
 
     }
 
@@ -149,25 +141,37 @@ public class MessageManager : MonoBehaviour {
     }
 
 
-    //テキスト欄に一文字ずつ表示
-    void PrintText() {
-        if (i < message[k].serifu.Length) {
-            if (t >= textSpeed) {
-                messageText.text += message[k].serifu[i];
-                t = 0f;
-                textLength++;
+    //セリフの表示
+    public void PrintText() {
 
-                //１行に表示しきる、または改行文字のとき現在の行数を足す
+        //表示
+        //名前
+        nameText.text = message[k].name;
+        //アイコン
+        DisplayIcon();
+        //セリフ
+        if (t < textSpeed) {
+            t += Time.deltaTime;
+        }
+        else {
+            if (i < message[k].serifu.Length) {
+                messageText.text += message[k].serifu[i];
                 if (textLength >= maxLineText || message[k].serifu[i] == '\n') {
                     textLength = 0;
                 }
                 i++;
             }
-            t += Time.deltaTime;
+            else {
+                isOneMessage = true;
+            }
+            t = 0;
         }
-        else if (!isOneMessage) {
-            isOneMessage = true;
-        }
+        
+    }
+
+
+    private IEnumerator WaitSeconds(float s) {
+        yield return new WaitForSeconds(s);
     }
 
     //--------------------------------------------------------------------------------------------
@@ -182,6 +186,8 @@ public class MessageManager : MonoBehaviour {
         switch (message[k].name) {
             case "魔理沙": charctorIcon.sprite = Resources.Load<Sprite>("Images/Icon/魔理沙"); break;
             case "勇儀": charctorIcon.sprite = Resources.Load<Sprite>("Images/Icon/勇儀"); break;
+            case "にとり": charctorIcon.sprite = Resources.Load<Sprite>("Images/Icon/にとり"); break;
+            case "爆発": break;
         }
     }
 
@@ -189,32 +195,59 @@ public class MessageManager : MonoBehaviour {
     
     //表示するテキスト
     void MessageText() {
+        int i = 0;
+        /* 
+       message[i].name = "";
+       message[i].serifu = "";
+       i++;
+         */
+
         /*
-       message[0].name = "";
-       message[0].serifu = "";
-      */
+         * kとnを設定して
+         * messageManager.startMessageTrigger = true;
+         * で表示開始
+         * 終了時messageManager.isEndMessageがtrueになる
+         * 
+         */
 
         /* 横全角21文字で１行分、４行以上になるとダメ */
         /* 総メッセージ数をmessage配列の宣言、start関数内のforループの条件に入れるの注意 */
 
         //-----------------------------------------ここからテキスト----------------------------------
-        message[0].name = "魔理沙";
-        message[0].serifu = "aaa";
+        message[i].name = "にとり";
+        message[i].serifu = "...ついに...";
 
-        message[1].name = "勇儀";
-        message[1].serifu = "bbb";
+        i++;
+        message[i].name = "にとり";
+        message[i].serifu = "ついに出来たーーーーーーーーーーー！！！\n「異変製造機」君！！！";
 
-        message[2].name = "魔理沙";
-        message[2].serifu = "asdf";
+        i++;
+        message[i].name = "魔理沙";
+        message[i].serifu = "今日も幻想郷は平和だz";
 
-        message[3].name = "勇儀";
-        message[3].serifu = "abcd";
+        i++;
+        message[i].name = "魔理沙";
+        message[i].serifu = "なに！？";
 
-        message[4].name = "魔理沙";
-        message[4].serifu = "あ～";
+        i++;
+        message[i].name = "魔理沙";
+        message[i].serifu = "今の爆音は紅魔館の方か！\nいってみるぜ！";
 
-        message[5].name = "魔理沙";
-        message[5].serifu = "い～";
+        i = 5;
+        message[i].name = "";
+        message[i].serifu = "";
+
+        i++;
+        message[i].name = "";
+        message[i].serifu = "";
+
+        i++;
+        message[i].name = "";
+        message[i].serifu = "";
+
+        i++;
+        message[i].name = "";
+        message[i].serifu = "";
     }
 
 

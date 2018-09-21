@@ -10,18 +10,15 @@ public class GameManager : MonoBehaviour {
 
     //スクリプト
     private MessageManager messageManager;
+    private MovieManager movieManager;
 
-    //オープニングシーン開始
-    public bool startOP = false;
-    //オープニングシーン終了
-    public bool endOP = false;
-    //ゲームシーン開始
-    public bool[] startGameSceneMV = {false, false, false, false, false, false };
-    //ゲームシーン終了
-    public bool[] endGameSceneMV = { false, false, false, false, false, false };
+    //現在のシーン
+    private string nowScene = "TitleScene";
+    //前のシーン
+    private string oldScene = "TitleScene";
 
     //プレイヤーが操作可能かどうか
-    public bool isPlayable = false;
+    public bool isPlayable = true;
 
     void Awake() {
         //シングルトン
@@ -41,28 +38,31 @@ public class GameManager : MonoBehaviour {
 
         //スクリプトの取得
         messageManager = GetComponent<MessageManager>();
+        movieManager = GetComponent<MovieManager>();
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-        //オープニングの終了、ゲームシーンの開始
-        if (SceneManager.GetActiveScene().name == "OPScene") {
-            if (messageManager.isEndMessage) {
-                messageManager.isEndMessage = false;
-                endOP = true;
-                startGameSceneMV[0] = true;
-            }
+        //現在のシーン
+        nowScene = SceneManager.GetActiveScene().name;
+ 
+      
+        //オープニングシーンの開始
+        if(nowScene == "OPScene" && nowScene != oldScene) {
+            oldScene = "OPScene";
+            movieManager.startOPMV = true;
+            isPlayable = false;
         }
 
-        //ゲームシーンのムービー1の終了
-        if(SceneManager.GetActiveScene().name == "GameScene") {
-            if (messageManager.isEndMessage) {
-                messageManager.isEndMessage = false;
-                endGameSceneMV[0] = true;
-                isPlayable = true;
-            }
+        //オープニングムービーの終了
+        if (movieManager.endOPMV) {
+            movieManager.endOPMV = false;
+            SceneManager.LoadScene("霧の湖");
+            isPlayable = true;
         }
+  
 
     }
 
@@ -73,10 +73,9 @@ public class GameManager : MonoBehaviour {
 
 
     //スタートボタン押下時に呼ばれる関数
-    //オープニングの開始
+    //オープニングシーンに遷移
     public void GameStart() {
         SceneManager.LoadScene("OPScene");
-        startOP = true;
     }
 
 }
