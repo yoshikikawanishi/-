@@ -60,10 +60,13 @@ public class GameManager : MonoBehaviour {
         if (movieManager.endOPMV) {
             movieManager.endOPMV = false;
             SceneManager.LoadScene("霧の湖");
+        }
+
+        //1面の開始
+        if (nowScene == "霧の湖" && nowScene != oldScene) {
+            oldScene = "霧の湖";
             isPlayable = true;
         }
-  
-
     }
 
 

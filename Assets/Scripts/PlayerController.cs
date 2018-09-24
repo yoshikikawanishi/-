@@ -12,10 +12,9 @@ public class PlayerController : MonoBehaviour {
     private Animator anim;
 
     //移動速度
-    private float v = 10f;
     private float up = 7f;
-    private float dashVelocity = 10f;
-    private float shotVelocity = 7f;
+    private float dashVelocity = 0.2f;
+    private float shotVelocity = 0.14f;
     //画面スクロールの速度
     private float scrollVelocity = 0.2f;
     private float upScrollVelocity = 0.14f;
@@ -35,9 +34,9 @@ public class PlayerController : MonoBehaviour {
     private bool isDashMode = true;
     //前進のアニメーション中かどうか
     private bool isGoForward = false;
-    //背景をスクロールさせるか自機を移動させるか
-    private bool isScrollForward = false;
-    private bool isScrollBack = false;
+    //自機の向き
+    private bool isRight = true;
+
   
     //スクリプト
     private GameManager gameManager;
@@ -61,59 +60,48 @@ public class PlayerController : MonoBehaviour {
     void Update() {
 
         if (gameManager.isPlayable) {
-
+            
+            //向きの判別
+            JudgeDirection();
             //移動
             Transition();
             //アニメーション
             Animation();
+            //ショット
+            Shot();
 
             //モードの切り替え
             if (Input.GetKeyDown(KeyCode.X)) {
                 if (isDashMode) {
                     isDashMode = false;
-                    v = shotVelocity;
-                    scrollVelocity = 0.14f;
+                    scrollVelocity = shotVelocity;
                 }
                 else {
                     isDashMode = true;
-                    v = dashVelocity;
-                    scrollVelocity = 0.2f;
+                    scrollVelocity = dashVelocity;
                 }
             }
-
-            //ショット
-            Shot();
-            
         }
 
     }
 
 
-    //背景をスクロールさせるかどうかの判別
-    void JudgeScroll() {
-        //右
-        if (this.transform.position.x > 0.5f && !isScrollForward) {
-            isScrollForward = true;
+    //自機の向きの判別
+    void JudgeDirection() {
+        //右向き
+        if(transform.localScale.x >= 0 && !isRight) {
+            isRight = true;
         }
-        else if (this.transform.position.x <= 0.5f && isScrollForward) {
-            isScrollForward = false;
+        //左向き
+        else if(transform.localScale.x < 0 && isRight) {
+            isRight = false;
         }
-        //左
-        if (this.transform.position.x < -0.5f && !isScrollBack) {
-            isScrollBack = true;
-        }
-        else if (this.transform.position.x >= -0.5f && isScrollBack) {
-            isScrollBack = false;
-        }
-       
     }
+
 
 
     //移動と向き
     void Transition() {
-
-        //背景をスクロールさせるかどうかの判別
-        JudgeScroll();
 
         //上移動
         if (Input.GetKey(KeyCode.UpArrow)) {
@@ -133,45 +121,42 @@ public class PlayerController : MonoBehaviour {
 
         //右移動
         if (Input.GetKey(KeyCode.RightArrow)) {
-            //背景スクロール
-            if (!isScrollForward) {
-                _rigidbody.velocity = new Vector2(v, _rigidbody.velocity.y);
-            }
-            //自機自体が動く
-            else {
-                _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
-                scrollBackGround.transform.position -= new Vector3(scrollVelocity, 0, 0);
-            }
+            //背景のスクロール
+            scrollBackGround.transform.position -= new Vector3(scrollVelocity, 0, 0);
             //自機の方向変更
             if (!Input.GetKey(KeyCode.LeftShift)) {
                 transform.localScale = new Vector3(scale.x, scale.y, scale.z);
             }
         }
-        if (Input.GetKeyUp(KeyCode.RightArrow)) {
-            _rigidbody.velocity = new Vector2(0, 0);
-        }
-
+        
         //左移動
         if (Input.GetKey(KeyCode.LeftArrow)) {
-            //背景スクロール
-            if (!isScrollBack) {
-                _rigidbody.velocity = new Vector2(-v, _rigidbody.velocity.y);
-            }
-            //自機自体が動く
-            else {
-                _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
-                scrollBackGround.transform.position += new Vector3(scrollVelocity, 0, 0);
-            }
+            //背景のスクロール
+            scrollBackGround.transform.position += new Vector3(scrollVelocity, 0, 0);
             //自機の方向変更
             if (!Input.GetKey(KeyCode.LeftShift)) {
                 transform.localScale = new Vector3(-scale.x, scale.y, scale.z);
             }
         }
-        if (Input.GetKeyUp(KeyCode.LeftArrow)) {
-            _rigidbody.velocity = new Vector2(0, 0);
+        
+
+        //向きによって自機の位置を変える
+        //右向き
+        if (isRight) {
+            if (transform.position.x > -2.8f) {
+                this.transform.position -= new Vector3(scrollVelocity, 0, 0);
+                scrollBackGround.transform.position -= new Vector3(scrollVelocity, 0, 0);
+            }
+        }
+        //左向き
+        else if(!isRight) {
+            if (transform.position.x < 2.8f) {
+                this.transform.position += new Vector3(scrollVelocity, 0, 0);
+                scrollBackGround.transform.position += new Vector3(scrollVelocity, 0, 0);
+            }
+            
         }
 
-        
     }
 
     //アニメーション
@@ -181,7 +166,7 @@ public class PlayerController : MonoBehaviour {
             anim.SetBool("GoForwardBool", true);
             isGoForward = true;
         }
-        //その他のアニメーション
+        //待機モーションのアニメーション
         if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.LeftArrow)) {
             anim.SetBool("GoForwardBool", false);
             isGoForward = false;
@@ -236,10 +221,10 @@ public class PlayerController : MonoBehaviour {
 
         //向きの切り替え
         if (!Input.GetKey(KeyCode.LeftShift)) {
-            if (Input.GetKey(KeyCode.LeftArrow) && bulletSpeed > 0) {
+            if (!isRight && bulletSpeed > 0) {
                 bulletSpeed = -20.0f;
             }
-            else if (Input.GetKey(KeyCode.RightArrow) && bulletSpeed < 0) {
+            else if (isRight && bulletSpeed < 0) {
                 bulletSpeed = 20.0f;
             }
         }
