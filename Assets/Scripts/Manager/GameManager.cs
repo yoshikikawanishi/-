@@ -12,6 +12,9 @@ public class GameManager : MonoBehaviour {
     private MessageManager messageManager;
     private MovieManager movieManager;
 
+    //自機
+    private GameObject player;
+
     //現在のシーン
     private string nowScene = "TitleScene";
     //前のシーン
@@ -57,16 +60,37 @@ public class GameManager : MonoBehaviour {
         }
 
         //オープニングムービーの終了
-        if (movieManager.endOPMV) {
+        if (nowScene == "OPScene2" && movieManager.endOPMV) {
             movieManager.endOPMV = false;
-            SceneManager.LoadScene("霧の湖");
+            SceneManager.LoadScene("霧の湖1");
         }
 
         //1面の開始
-        if (nowScene == "霧の湖" && nowScene != oldScene) {
-            oldScene = "霧の湖";
+        if (nowScene == "霧の湖1" && nowScene != oldScene) {
+            oldScene = "霧の湖1";
+            isPlayable = true;
+            //自機の取得
+            player = GameObject.Find("Marisa");
+        }
+
+        //1面中ボスムービー開始
+        if (nowScene == "霧の湖1") {
+            if (player.transform.position.x > 108f && isPlayable) {
+                isPlayable = false;
+                StartCoroutine("SceneChange","1面中ボス");
+            }
+        }
+        if(nowScene == "1面中ボス" && nowScene != oldScene) {
+            oldScene = nowScene;
+            movieManager.startGameSceneMV[0] = true;
+        }
+
+        //1面中ボス戦闘開始
+        if(nowScene == "1面中ボス" && movieManager.endGameSceneMV[0]) {
+            movieManager.endGameSceneMV[0] = false;
             isPlayable = true;
         }
+        
     }
 
 
@@ -79,6 +103,15 @@ public class GameManager : MonoBehaviour {
     //オープニングシーンに遷移
     public void GameStart() {
         SceneManager.LoadScene("OPScene");
+    }
+
+    //シーン遷移時の関数
+    private IEnumerator SceneChange(string nextScene) {
+        SceneEffect sceneEfect = GameObject.Find("BlackOut").GetComponent<SceneEffect>();
+        sceneEfect.startSceneChange = true;
+        yield return new WaitForSeconds(1.0f);
+        SceneManager.LoadScene(nextScene);
+
     }
 
 }

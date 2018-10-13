@@ -17,6 +17,8 @@ public class MovieManager : MonoBehaviour {
 
     //ムービーナンバー0の背景スクロールの速度
     private float scroll = 0.1f;
+    //移動の加速度
+    private float a = 0.11f;
 
     //オープニングシーン開始
     public bool startOPMV = false;
@@ -29,6 +31,8 @@ public class MovieManager : MonoBehaviour {
 
     //背景取得用
     GameObject backGround;
+    //ルーミア
+    GameObject rumia;
 
     // Use this for initialization
     void Start () {
@@ -48,9 +52,13 @@ public class MovieManager : MonoBehaviour {
         if (startOPMV) {
             startOPMV = false;
             StartCoroutine("OPScene");
-        }   
+        }
 
-
+        //1面中ボス開始
+        if (startGameSceneMV[0]) {
+            startGameSceneMV[0] = false;
+            StartCoroutine("Rumia");
+        }
 
         //アップデート内の処理
 
@@ -59,8 +67,15 @@ public class MovieManager : MonoBehaviour {
             case 0:
                 //背景の移動
                 backGround.transform.position -= new Vector3(scroll, 0, 0);
-                break;                
-
+                break;
+            //1面中ボス前
+            case 1:
+                //画面外から入ってくる
+                if (a >= 0) {
+                    rumia.transform.position += new Vector3(-a, -a, 0);
+                    a -= 0.001f;
+                }
+                break;
         }
 
     }
@@ -131,7 +146,20 @@ public class MovieManager : MonoBehaviour {
         endOPMV = true;
     }
 
-
+    //ルーミア戦前会話
+    private IEnumerator Rumia() {
+        rumia = GameObject.Find("ルーミア");
+        //画面外から入ってくる
+        a = 0.11f;
+        movieNumber = 1;
+        yield return new WaitForSeconds(1.5f);
+        //会話開始
+        messageManager.k = 8;
+        messageManager.n = 8;
+        messageManager.startMessageTrigger = true;
+        yield return new WaitUntil(EndMessage);
+        endGameSceneMV[0] = true;
+    }
 
     //メッセージ表示の終了
     private bool EndMessage() {

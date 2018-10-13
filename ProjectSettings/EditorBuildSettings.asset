@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/OPScene2.unity
     guid: df3aa3ce8089bd041b77e91a50fca09e
   - enabled: 1
-    path: "Assets/Scenes/\u9727\u306E\u6E56.unity"
+    path: "Assets/Scenes/\u9727\u306E\u6E561.unity"
     guid: 411b56efc3a451748b8f15421a1d5901
+  - enabled: 1
+    path: "Assets/Scenes/1\u9762\u4E2D\u30DC\u30B9.unity"
+    guid: dd120edde144478468c24aa688046b00
   m_configObjects: {}

@@ -6,18 +6,17 @@ public class PlayerController : MonoBehaviour {
 
     //リジッドボディー取得用
     private Rigidbody2D _rigidbody;
-    //スクロールする背景
-    private GameObject scrollBackGround;
     //アニメーションコンポーネント
     private Animator anim;
 
     //移動速度
     private float up = 7f;
-    private float dashVelocity = 0.2f;
-    private float shotVelocity = 0.14f;
-    //画面スクロールの速度
-    private float scrollVelocity = 0.2f;
-    private float upScrollVelocity = 0.14f;
+    private float dashVelocity = 15f;
+    private float shotVelocity = 7f;
+    //速度
+    private float velocity = 15f;
+    //加速度
+    private float a = 0.5f;
     //弾速
     private float bulletSpeed = 20.0f;
     //弾の生成スパン
@@ -35,7 +34,7 @@ public class PlayerController : MonoBehaviour {
     //前進のアニメーション中かどうか
     private bool isGoForward = false;
     //自機の向き
-    private bool isRight = true;
+    public bool isRight = true;
 
   
     //スクリプト
@@ -47,8 +46,6 @@ public class PlayerController : MonoBehaviour {
         _rigidbody = this.GetComponent<Rigidbody2D>();
         //アニメーションコンポーネントの取得
         anim = GetComponent<Animator>();
-        //スクロールする背景の取得
-        scrollBackGround = GameObject.Find("BackGround");
         //スクリプトの取得
         gameManager = GameObject.Find("Scripts").GetComponent<GameManager>();
 
@@ -74,11 +71,15 @@ public class PlayerController : MonoBehaviour {
             if (Input.GetKeyDown(KeyCode.X)) {
                 if (isDashMode) {
                     isDashMode = false;
-                    scrollVelocity = shotVelocity;
+                    velocity = shotVelocity;
+                    a = 7.0f;
+                    _rigidbody.velocity = new Vector2(0, 0);
                 }
                 else {
                     isDashMode = true;
-                    scrollVelocity = dashVelocity;
+                    velocity = dashVelocity;
+                    a = 0.5f;
+                    _rigidbody.velocity = new Vector2(0, 0);
                 }
             }
         }
@@ -108,7 +109,7 @@ public class PlayerController : MonoBehaviour {
             _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, up);           
         }
         if (Input.GetKeyUp(KeyCode.UpArrow)) {
-            _rigidbody.velocity = new Vector2(0, 0);
+            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
         }
 
         //下移動
@@ -116,46 +117,39 @@ public class PlayerController : MonoBehaviour {
             _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, -up);
         }
         if (Input.GetKeyUp(KeyCode.DownArrow)) {
-            _rigidbody.velocity = new Vector2(0, 0);
+            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
         }
 
         //右移動
         if (Input.GetKey(KeyCode.RightArrow)) {
-            //背景のスクロール
-            scrollBackGround.transform.position -= new Vector3(scrollVelocity, 0, 0);
+            if (_rigidbody.velocity.x < velocity) {
+                _rigidbody.velocity += new Vector2(a, 0);
+            }
+            
             //自機の方向変更
             if (!Input.GetKey(KeyCode.LeftShift)) {
                 transform.localScale = new Vector3(scale.x, scale.y, scale.z);
             }
         }
+        if (Input.GetKeyUp(KeyCode.RightArrow)) {
+            _rigidbody.velocity = new Vector2(0, 0);
+        }
         
         //左移動
         if (Input.GetKey(KeyCode.LeftArrow)) {
-            //背景のスクロール
-            scrollBackGround.transform.position += new Vector3(scrollVelocity, 0, 0);
+            if (_rigidbody.velocity.x > -velocity) {
+                _rigidbody.velocity -= new Vector2(a, 0);
+            }
             //自機の方向変更
             if (!Input.GetKey(KeyCode.LeftShift)) {
                 transform.localScale = new Vector3(-scale.x, scale.y, scale.z);
             }
         }
-        
+        if (Input.GetKeyUp(KeyCode.LeftArrow)) {
+            _rigidbody.velocity = new Vector2(0, 0);
+        }
 
-        //向きによって自機の位置を変える
-        //右向き
-        if (isRight) {
-            if (transform.position.x > -2.8f) {
-                this.transform.position -= new Vector3(scrollVelocity, 0, 0);
-                scrollBackGround.transform.position -= new Vector3(scrollVelocity, 0, 0);
-            }
-        }
-        //左向き
-        else if(!isRight) {
-            if (transform.position.x < 2.8f) {
-                this.transform.position += new Vector3(scrollVelocity, 0, 0);
-                scrollBackGround.transform.position += new Vector3(scrollVelocity, 0, 0);
-            }
-            
-        }
+     
 
     }
 

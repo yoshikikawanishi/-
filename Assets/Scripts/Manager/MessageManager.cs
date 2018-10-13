@@ -55,7 +55,7 @@ public class MessageManager : MonoBehaviour {
     // Use this for initialization
     void Start() {
 
-        for (int l = 0; l <= 99; l++) {
+        for (int l = 0; l < 100; l++) {
             message[l] = new TextClass();
         }
         //テキストを代入
@@ -187,7 +187,7 @@ public class MessageManager : MonoBehaviour {
             case "魔理沙": charctorIcon.sprite = Resources.Load<Sprite>("Images/Icon/魔理沙"); break;
             case "勇儀": charctorIcon.sprite = Resources.Load<Sprite>("Images/Icon/勇儀"); break;
             case "にとり": charctorIcon.sprite = Resources.Load<Sprite>("Images/Icon/にとり"); break;
-            case "爆発": break;
+            case "ルーミア": charctorIcon.sprite = Resources.Load<Sprite>("Images/Icon/ルーミア"); break;
         }
     }
 
@@ -246,8 +246,8 @@ public class MessageManager : MonoBehaviour {
         message[i].serifu = "";
 
         i++;
-        message[i].name = "";
-        message[i].serifu = "";
+        message[i].name = "ルーミア";
+        message[i].serifu = "ああああ";
     }
 
 
